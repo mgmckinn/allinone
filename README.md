@@ -16,12 +16,10 @@ This is a simple web-based application for generating, submitting, and tracking 
 ## Team Members
 
 **Managers**:
-- *River Rd.*: Sean, Nick
-- *Noble Creek*: Mitch, Margaret, Amy
+
 
 **Bankers**:
-- *River Rd.*: Melly, Rita, Karen
-- *Noble Creek*: Vicky, Veronica, Cody, Jacob
+
 
 ## Pages
 
