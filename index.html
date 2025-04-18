@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Saturday Schedule Generator</title>
+        <style>
+            :root {
+                --primary-blue: #1a3d7c;
+                --accent-gold: #c9a227;
+                --bg-light: #eef2f7;
+                --text-dark: #2c3e50;
+            }
+
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                background: linear-gradient(135deg, var(--bg-light), #d6e4f0);
+                color: var(--text-dark);
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            h1 {
+                color: var(--primary-blue);
+                margin-bottom: 1rem;
+                font-size: 2rem;
+            }
+
+            .schedule {
+                background: white;
+                border-left: 6px solid var(--accent-gold);
+                padding: 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 500px;
+                margin-bottom: 1rem;
+            }
+
+            .schedule p {
+                font-size: 1rem;
+                margin: 0.4rem 0;
+            }
+
+            button {
+                background: linear-gradient(135deg, var(--primary-blue), #274b8e);
+                color: white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                margin: 0.5rem;
+                border-radius: 8px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.3s ease, transform 0.2s ease;
+            }
+
+            button:hover {
+                background: var(--accent-gold);
+                color: var(--text-dark);
+                transform: translateY(-2px);
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Saturday Schedule Generator</h1>
+        <div class="schedule" id="scheduleOutput"></div>
+        <div>
+            <button onclick="generateSchedule()">Generate Schedule</button>
+            <button onclick="submitSchedule()">Submit Schedule</button>
+            <button onclick="clearSchedule()">Clear Schedule</button>
+            <button onclick="viewHistory()">View History</button>
+        </div>
+
+        <script>
+            const riverRdManagers = ["Sean", "Nick"];
+            const nobleCreekManagers = ["Mitch", "Margaret", "Amy"];
+            const riverRdBankers = ["Melly", "Rita", "Karen"];
+            const nobleCreekBankers = ["Vicky", "Veronica", "Cody", "Jacob"];
+
+            let currentSchedule = null;
+
+            function getLastSubmittedSchedule() {
+                const history = JSON.parse(localStorage.getItem("submittedSchedules") || "[]");
+                return history.length > 0 ? history[history.length - 1] : null;
+            }
+
+            function generateSchedule() {
+                const last = getLastSubmittedSchedule();
+                const usedManager = last?.manager;
+                const usedBankers = last?.bankers || [];
+
+                const availableManagers = [...riverRdManagers, ...nobleCreekManagers].filter(m => m !== usedManager);
+                const availableBankers = [...riverRdBankers, ...nobleCreekBankers].filter(b => !usedBankers.includes(b));
+
+                let manager = availableManagers[Math.floor(Math.random() * availableManagers.length)];
+
+                let bankers = [];
+                const shuffledBankers = availableBankers.sort(() => 0.5 - Math.random());
+                bankers = shuffledBankers.slice(0, 3);
+
+                // If not enough bankers remain, fill from full list to ensure a schedule
+                if (bankers.length < 3) {
+                    const fallback = [...riverRdBankers, ...nobleCreekBankers].filter(b => !bankers.includes(b));
+                    while (bankers.length < 3 && fallback.length > 0) {
+                        bankers.push(fallback.pop());
+                    }
+                }
+
+                currentSchedule = { manager, bankers };
+                document.getElementById("scheduleOutput").innerHTML = `
+        <p><strong>Manager on Duty:</strong> ${ manager }</p>
+        <p><strong>Bankers:</strong> ${ bankers.join(", ") }</p>
+      `;
+            }
+
+            function submitSchedule() {
+                if (!currentSchedule) return alert("No schedule to submit.");
+                const history = JSON.parse(localStorage.getItem("submittedSchedules") || "[]");
+                history.push(currentSchedule);
+                localStorage.setItem("submittedSchedules", JSON.stringify(history));
+                alert("Schedule submitted!");
+            }
+
+            function clearSchedule() {
+                currentSchedule = null;
+                document.getElementById("scheduleOutput").innerHTML = "";
+            }
+
+            function viewHistory() {
+                window.location.href = 'history.html';
+            }
+        </script>
+    </body>
+
+</html>
