@@ -4,18 +4,39 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="manifest" href="manifest.json">
+        <link rel="icon" type="image/png" href="assets/images/A_flat-design_vector_graphic_digital_illustration.png"
+            sizes="192x192">
+        <link rel="icon" type="image/png" href="assets/images/A_flat-design_vector_graphic_digital_illustration.png"
+            sizes="512x512">
+
+        <script>
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            }
+        </script>
+
         <title>Saturday Schedule Generator</title>
         <style>
             :root {
-                --primary-blue: #1a3d7c;
-                --accent-gold: #c9a227;
-                --bg-light: #eef2f7;
-                --text-dark: #2c3e50;
+                --investment-blue: #003366;
+                --attentive-gold: #ffcc00;
+                --bg-light: #f5f7fa;
+                --text-dark: #202124;
+                --button-hover-blue: #002244;
+                --button-hover-gold: #e6b800;
+                --button-shadow: rgba(0, 51, 102, 0.3);
             }
 
             body {
                 font-family: 'Segoe UI', sans-serif;
-                background: linear-gradient(135deg, var(--bg-light), #d6e4f0);
+                background: linear-gradient(135deg, var(--bg-light), #e3eaf4);
                 color: var(--text-dark);
                 padding: 2rem;
                 display: flex;
@@ -25,20 +46,21 @@
             }
 
             h1 {
-                color: var(--primary-blue);
-                margin-bottom: 1rem;
-                font-size: 2rem;
+                color: var(--investment-blue);
+                margin-bottom: 1.5rem;
+                font-size: 2.5rem;
+                text-align: center;
             }
 
             .schedule {
                 background: white;
-                border-left: 6px solid var(--accent-gold);
+                border-left: 6px solid var(--attentive-gold);
                 padding: 1.5rem;
                 border-radius: 12px;
                 box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
                 width: 100%;
                 max-width: 500px;
-                margin-bottom: 1rem;
+                margin-bottom: 1.5rem;
             }
 
             .schedule p {
@@ -46,22 +68,44 @@
                 margin: 0.4rem 0;
             }
 
+            .button-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+                width: 100%;
+                max-width: 500px;
+            }
+
             button {
-                background: linear-gradient(135deg, var(--primary-blue), #274b8e);
+                background: var(--investment-blue);
                 color: white;
                 border: none;
                 padding: 0.75rem 1.5rem;
-                margin: 0.5rem;
                 border-radius: 8px;
                 font-size: 1rem;
                 cursor: pointer;
-                transition: background 0.3s ease, transform 0.2s ease;
+                transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+                box-shadow: 0 4px 10px var(--button-shadow);
             }
 
             button:hover {
-                background: var(--accent-gold);
-                color: var(--text-dark);
+                background: var(--button-hover-blue);
                 transform: translateY(-2px);
+                box-shadow: 0 6px 15px var(--button-shadow);
+            }
+
+            button:active {
+                transform: translateY(0);
+                box-shadow: 0 3px 8px var(--button-shadow);
+            }
+
+            .gold-button {
+                background: var(--attentive-gold);
+                color: var(--text-dark);
+            }
+
+            .gold-button:hover {
+                background: var(--button-hover-gold);
             }
 
         </style>
@@ -70,11 +114,12 @@
     <body>
         <h1>Saturday Schedule Generator</h1>
         <div class="schedule" id="scheduleOutput"></div>
-        <div>
+        <div class="button-container">
             <button onclick="generateSchedule()">Generate Schedule</button>
             <button onclick="submitSchedule()">Submit Schedule</button>
             <button onclick="clearSchedule()">Clear Schedule</button>
-            <button onclick="viewHistory()">View History</button>
+            <button class="gold-button" onclick="viewHistory()">View History</button>
+            <button class="gold-button" onclick="viewTally()">View Tally</button>
         </div>
 
         <script>
@@ -114,9 +159,9 @@
 
                 currentSchedule = { manager, bankers };
                 document.getElementById("scheduleOutput").innerHTML = `
-        <p><strong>Manager on Duty:</strong> ${ manager }</p>
-        <p><strong>Bankers:</strong> ${ bankers.join(", ") }</p>
-      `;
+                <p><strong>Manager on Duty:</strong> ${ manager }</p>
+                <p><strong>Bankers:</strong> ${ bankers.join(", ") }</p>
+            `;
             }
 
             function submitSchedule() {
@@ -134,6 +179,10 @@
 
             function viewHistory() {
                 window.location.href = 'history.html';
+            }
+
+            function viewTally() {
+                window.location.href = 'track.html';
             }
         </script>
     </body>

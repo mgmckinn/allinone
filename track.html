@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Work Tally</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                background: #eef2f7;
+                color: #2c3e50;
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            h1 {
+                color: #1a3d7c;
+                margin-bottom: 1rem;
+            }
+
+            .tally {
+                width: 100%;
+                max-width: 600px;
+                background: white;
+                border-radius: 12px;
+                padding: 1.5rem;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .tally p {
+                margin: 0.5rem 0;
+            }
+
+            button {
+                background: #1a3d7c;
+                color: white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                margin-top: 1rem;
+                border-radius: 8px;
+                font-size: 1rem;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background: #c9a227;
+                color: #2c3e50;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Work Tally</h1>
+        <div id="tallyContainer" class="tally"></div>
+        <button onclick="resetTracker()">Reset Tracker</button>
+        <button onclick="goBack()">Back to History</button>
+
+        <script>
+            function loadTally() {
+                const history = JSON.parse(localStorage.getItem("submittedSchedules") || "[]");
+                const tallyContainer = document.getElementById("tallyContainer");
+
+                if (history.length === 0) {
+                    tallyContainer.innerHTML = "<p>No schedules submitted yet.</p>";
+                    return;
+                }
+
+                // Calculate tally
+                const tally = {};
+                history.forEach(schedule => {
+                    tally[schedule.manager] = (tally[schedule.manager] || 0) + 1;
+                    schedule.bankers.forEach(banker => {
+                        tally[banker] = (tally[banker] || 0) + 1;
+                    });
+                });
+
+                // Display tally
+                tallyContainer.innerHTML = `
+                <h2>Work Tally</h2>
+                ${ Object.entries(tally).map(([person, count]) => `
+                    <p>${ person }: ${ count } time(s)</p>
+                `).join("") }
+            `;
+            }
+
+            function resetTracker() {
+                if (confirm("Are you sure you want to reset the tracker? This action cannot be undone.")) {
+                    localStorage.removeItem("submittedSchedules");
+                    loadTally(); // Refresh the tally display
+                }
+            }
+
+            function goBack() {
+                window.location.href = 'history.html';
+            }
+
+            // Load tally on page load
+            loadTally();
+        </script>
+    </body>
+
+</html>
