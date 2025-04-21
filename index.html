@@ -11,7 +11,7 @@
             sizes="512x512">
             <img src="./6DD4BD4E-B1B2-4A0B-B1C4-791C1767B66E.png" alt="App Logo" class="app-logo">
             <link rel="icon" type="image/png" href="assets/images/logo.png" sizes="32x32">
-            <link rel="apple-touch-icon" sizes="180x180" href="assets/images/logo.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/images/logo.png">
 
 <style>
     .shrinked-image {
@@ -83,111 +83,62 @@
                 margin: 0.4rem 0;
             }
 
-           .button-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem; /* Adjust spacing between buttons */
-    width: 100%;
-    max-width: 500px;
-    margin-top: 1rem;
-}
+            .button-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+                width: 100%;
+                max-width: 500px;
+            }
 
-button {
-    flex: 1 1 calc(50% - 1rem); /* Make buttons take up 50% of the row with spacing */
-    max-width: 200px; /* Optional: Limit the button width */
-    background: var(--investment-blue);
-    color: white;
-    border: none;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px var(--button-shadow);
-}
+            button {
+                background: var(--investment-blue);
+                color: white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+                box-shadow: 0 4px 10px var(--button-shadow);
+            }
 
-button:hover {
-    background: var(--button-hover-blue);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px var(--button-shadow);
-}
+            button:hover {
+                background: var(--button-hover-blue);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px var(--button-shadow);
+            }
 
-button:active {
-    transform: translateY(0);
-    box-shadow: 0 3px 8px var(--button-shadow);
-}
+            button:active {
+                transform: translateY(0);
+                box-shadow: 0 3px 8px var(--button-shadow);
+            }
 
-.gold-button {
-    background: var(--attentive-gold);
-    color: var(--text-dark);
-}
+            .gold-button {
+                background: var(--attentive-gold);
+                color: var(--text-dark);
+            }
 
-.gold-button:hover {
-    background: var(--button-hover-gold);
-}
+            .gold-button:hover {
+                background: var(--button-hover-gold);
+            }
+
         </style>
     </head>
 
     <body>
         <h1>Saturday Schedule Generator</h1>
-
-       <!--<select id="teamSelector" onchange="updateSelectedTeam()"
-            <option value="">Select a Team</option>
-        </select>-->
-
   
         <div class="schedule" id="scheduleOutput"></div>
-    <div class="button-container">
-        <button onclick="generateSchedule()">Generate Schedule</button>
-        <button onclick="submitSchedule()">Submit Schedule</button>
-        <button onclick="clearSchedule()">Clear Schedule</button>
-        <button class="gold-button" onclick="viewHistory()">View History</button>
-        <button class="gold-button" onclick="viewTally()">View Tally</button>
-    </div>
+        <div class="button-container">
+            <button onclick="generateSchedule()">Generate Schedule</button>
+            <button onclick="submitSchedule()">Submit Schedule</button>
+            <button onclick="clearSchedule()">Clear Schedule</button>
+            <button class="gold-button" onclick="viewHistory()">View History</button>
+            <button class="gold-button" onclick="viewTally()">View Tally</button>
+        </div>
 
         <script>
-            let selectedTeam = null;
-
-                function loadTeamSelector() {
-                    const teams = JSON.parse(localStorage.getItem('teams') || '[]');
-                    const teamSelector = document.getElementById('teamSelector');
-                    teamSelector.innerHTML = '<option value="">Select a Team</option>';
-
-                    teams.forEach((team, index) => {
-                        const option = document.createElement('option');
-                        option.value = index;
-                        option.textContent = team.name;
-                        teamSelector.appendChild(option);
-                    });
-                }
-
-                function updateSelectedTeam() {
-                    const teams = JSON.parse(localStorage.getItem('teams') || '[]');
-                    const selectedIndex = document.getElementById('teamSelector').value;
-                    selectedTeam = selectedIndex ? teams[selectedIndex] : null;
-                }
-
-                function generateSchedule() {
-                    if (!selectedTeam) {
-                        alert('Please select a team first.');
-                        return;
-                    }
-
-                    const members = selectedTeam.members;
-                    const shuffledMembers = members.sort(() => 0.5 - Math.random());
-                    const manager = shuffledMembers[0];
-                    const bankers = shuffledMembers.slice(1, 4);
-
-                    document.getElementById('scheduleOutput').innerHTML = `
-        <p><strong>Manager on Duty:</strong> ${ manager }</p>
-        <p><strong>Bankers:</strong> ${ bankers.join(', ') }</p>
-    `;
-                }
-
-                // Load teams into the dropdown on page load
-                loadTeamSelector();
-            
             const riverRdManagers = ["Sean", "Nick"];
             const nobleCreekManagers = ["Mitch", "Margaret", "Amy"];
             const riverRdBankers = ["Melly", "Rita", "Karen"];
