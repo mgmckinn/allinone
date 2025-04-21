@@ -11,7 +11,13 @@
             sizes="512x512">
             <img src="./6DD4BD4E-B1B2-4A0B-B1C4-791C1767B66E.png" alt="App Logo" class="app-logo">
 
-
+<style>
+    .shrinked-image {
+        width: 200px;
+        height: auto;
+        margin-bottom: 1.5rem;
+    }
+</style>
         <script>
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('service-worker.js')
@@ -120,16 +126,7 @@
 
     <body>
         <h1>Saturday Schedule Generator</h1>
-    <style>
-        .shrinked-image {
-            width: 200px;
-            height: auto;
-            margin-bottom: 1.5rem;
-        }
-    </style>
-    
-        
-        <p>Welcome to the Saturday Schedule Generator! Use the buttons below to manage your schedule.</p>
+  
         <div class="schedule" id="scheduleOutput"></div>
         <div class="button-container">
             <button onclick="generateSchedule()">Generate Schedule</button>
