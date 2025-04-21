@@ -83,46 +83,49 @@
                 margin: 0.4rem 0;
             }
 
-            .button-container {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 1rem;
-                width: 100%;
-                max-width: 500px;
-            }
+          .button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem; /* Adjust spacing between buttons */
+    width: 100%;
+    max-width: 500px;
+    margin-top: 1rem;
+}
 
-            button {
-                background: var(--investment-blue);
-                color: white;
-                border: none;
-                padding: 0.75rem 1.5rem;
-                border-radius: 8px;
-                font-size: 1rem;
-                cursor: pointer;
-                transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-                box-shadow: 0 4px 10px var(--button-shadow);
-            }
+button {
+    flex: 1 1 calc(50% - 1rem); /* Make buttons take up 50% of the row with spacing */
+    max-width: 200px; /* Optional: Limit the button width */
+    background: var(--investment-blue);
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px var(--button-shadow);
+}
 
-            button:hover {
-                background: var(--button-hover-blue);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 15px var(--button-shadow);
-            }
+button:hover {
+    background: var(--button-hover-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px var(--button-shadow);
+}
 
-            button:active {
-                transform: translateY(0);
-                box-shadow: 0 3px 8px var(--button-shadow);
-            }
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px var(--button-shadow);
+}
 
-            .gold-button {
-                background: var(--attentive-gold);
-                color: var(--text-dark);
-            }
+.gold-button {
+    background: var(--attentive-gold);
+    color: var(--text-dark);
+}
 
-            .gold-button:hover {
-                background: var(--button-hover-gold);
-            }
-
+.gold-button:hover {
+    background: var(--button-hover-gold);
+}
         </style>
     </head>
 
