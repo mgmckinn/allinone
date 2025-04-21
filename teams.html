@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Manage Teams</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                background: #eef2f7;
+                color: #2c3e50;
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            h1 {
+                color: #1a3d7c;
+                margin-bottom: 1rem;
+            }
+
+            .team-form {
+                background: white;
+                border-radius: 12px;
+                padding: 1.5rem;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 500px;
+                margin-bottom: 2rem;
+            }
+
+            label {
+                display: block;
+                margin: 0.5rem 0 0.2rem;
+                font-weight: bold;
+            }
+
+            input,
+            textarea {
+                width: 100%;
+                padding: 0.5rem;
+                margin-bottom: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 1rem;
+            }
+
+            button {
+                background: #1a3d7c;
+                color: white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            button:hover {
+                background: #c9a227;
+            }
+
+            .team-list {
+                width: 100%;
+                max-width: 500px;
+            }
+
+            .team-item {
+                background: white;
+                border-radius: 8px;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .team-item h3 {
+                margin: 0 0 0.5rem;
+            }
+
+            .team-item button {
+                margin-right: 0.5rem;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Manage Teams</h1>
+        <form id="teamForm" class="team-form">
+            <label for="teamName">Team Name:</label>
+            <input type="text" id="teamName" placeholder="Enter team name">
+
+            <label for="teamMembers">Team Members:</label>
+            <textarea id="teamMembers" placeholder="Enter team members, separated by commas"></textarea>
+
+            <button type="button" onclick="saveTeam()">Save Team</button>
+        </form>
+
+        <div id="teamList" class="team-list"></div>
+
+        <button onclick="goToGenerator()">Back to Generator</button>
+
+        <script>
+            function loadTeams() {
+                const teams = JSON.parse(localStorage.getItem('teams') || '[]');
+                const teamList = document.getElementById('teamList');
+                teamList.innerHTML = '';
+
+                teams.forEach((team, index) => {
+                    const teamItem = document.createElement('div');
+                    teamItem.className = 'team-item';
+                    teamItem.innerHTML = `
+                    <h3>${ team.name }</h3>
+                    <p>Members: ${ team.members.join(', ') }</p>
+                    <button onclick="editTeam(${ index })">Edit</button>
+                    <button onclick="deleteTeam(${ index })">Delete</button>
+                `;
+                    teamList.appendChild(teamItem);
+                });
+            }
+
+            function saveTeam() {
+                const teamName = document.getElementById('teamName').value.trim();
+                const teamMembers = document.getElementById('teamMembers').value.split(',').map(name => name.trim());
+
+                if (!teamName || teamMembers.length === 0) {
+                    alert('Please enter a team name and at least one member.');
+                    return;
+                }
+
+                const teams = JSON.parse(localStorage.getItem('teams') || '[]');
+                teams.push({ name: teamName, members: teamMembers });
+                localStorage.setItem('teams', JSON.stringify(teams));
+
+                alert('Team saved successfully!');
+                document.getElementById('teamForm').reset();
+                loadTeams();
+            }
+
+            function editTeam(index) {
+                const teams = JSON.parse(localStorage.getItem('teams') || '[]');
+                const team = teams[index];
+
+                document.getElementById('teamName').value = team.name;
+                document.getElementById('teamMembers').value = team.members.join(', ');
+
+                teams.splice(index, 1); // Remove the team temporarily
+                localStorage.setItem('teams', JSON.stringify(teams));
+                loadTeams();
+            }
+
+            function deleteTeam(index) {
+                const teams = JSON.parse(localStorage.getItem('teams') || '[]');
+                teams.splice(index, 1);
+                localStorage.setItem('teams', JSON.stringify(teams));
+                loadTeams();
+            }
+
+            function goToGenerator() {
+                window.location.href = 'index.html';
+            }
+
+            // Load teams on page load
+            loadTeams();
+        </script>
+    </body>
+
+</html>

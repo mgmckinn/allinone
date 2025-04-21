@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Setup MODs and Bankers</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                background: #eef2f7;
+                color: #2c3e50;
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            h1 {
+                color: #1a3d7c;
+                margin-bottom: 1rem;
+            }
+
+            form {
+                background: white;
+                border-radius: 12px;
+                padding: 1.5rem;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 500px;
+            }
+
+            label {
+                display: block;
+                margin: 0.5rem 0 0.2rem;
+                font-weight: bold;
+            }
+
+            input,
+            textarea {
+                width: 100%;
+                padding: 0.5rem;
+                margin-bottom: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 1rem;
+            }
+
+            button {
+                background: #1a3d7c;
+                color: white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            button:hover {
+                background: #c9a227;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Setup MODs and Bankers</h1>
+        <form id="setupForm">
+            <label for="mods">Managers on Duty (MODs):</label>
+            <textarea id="mods" placeholder="Enter MOD names, separated by commas"></textarea>
+
+            <label for="bankers">Bankers:</label>
+            <textarea id="bankers" placeholder="Enter Banker names, separated by commas"></textarea>
+
+            <button type="button" onclick="saveSetup()">Save</button>
+        </form>
+
+        <script>
+            function saveSetup() {
+                const mods = document.getElementById('mods').value.split(',').map(name => name.trim());
+                const bankers = document.getElementById('bankers').value.split(',').map(name => name.trim());
+
+                if (mods.length === 0 || bankers.length === 0) {
+                    alert('Please enter at least one MOD and one Banker.');
+                    return;
+                }
+
+                // Save to localStorage
+                localStorage.setItem('mods', JSON.stringify(mods));
+                localStorage.setItem('bankers', JSON.stringify(bankers));
+
+                alert('Setup saved successfully!');
+                window.location.href = 'index.html'; // Redirect to the main page
+            }
+
+            // Pre-fill the form if data exists
+            window.onload = () => {
+                const savedMods = JSON.parse(localStorage.getItem('mods') || '[]');
+                const savedBankers = JSON.parse(localStorage.getItem('bankers') || '[]');
+
+                document.getElementById('mods').value = savedMods.join(', ');
+                document.getElementById('bankers').value = savedBankers.join(', ');
+            };
+        </script>
+    </body>
+
+</html>
