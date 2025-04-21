@@ -120,6 +120,17 @@
 
     <body>
         <h1>Saturday Schedule Generator</h1>
+    <style>
+        .shrinked-image {
+            width: 200px;
+            height: auto;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+    
+    <img src="/scheduler app.png" alt="Scheduler App" class="shrinked-image">
+        
+        <p>Welcome to the Saturday Schedule Generator! Use the buttons below to manage your schedule.</p>
         <div class="schedule" id="scheduleOutput"></div>
         <div class="button-container">
             <button onclick="generateSchedule()">Generate Schedule</button>
@@ -191,6 +202,26 @@
             function viewTally() {
                 window.location.href = 'track.html';
             }
+            let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Show your custom install button
+    const installButton = document.getElementById('installButton');
+    installButton.style.display = 'block';
+
+    installButton.addEventListener('click', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            } else {
+                console.log('User dismissed the install prompt');
+            }
+            deferredPrompt = null;
+        });
+    });
+});
         </script>
     </body>
 
